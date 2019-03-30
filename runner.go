@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -58,9 +59,21 @@ var netClient = &http.Client{
 	Timeout: time.Second * 10,
 }
 
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
 func main() {
+	workspace := os.Getenv("GITHUB_WORKSPACE")
+	d1 := []byte("hello\ngo\n")
+	location := fmt.Sprintf("%s/file.json", workspace)
+	print(location)
+	err := ioutil.WriteFile(location, d1, 0644)
+	check(err)
 	// loadCache()
-	loadAllEvents()
+	// loadAllEvents()
 }
 
 func loadCache() {
@@ -81,6 +94,7 @@ func loadAllEvents() {
 	event := m.Data.Portfolio.Hosting[0]
 	print(event.ID)
 	loadEvent(event.ID, event.FormattedDuration)
+
 	// for _, event := range m.Data.Portfolio.Hosting {
 	// 	print(event.ID)
 	// 	print("\n")
