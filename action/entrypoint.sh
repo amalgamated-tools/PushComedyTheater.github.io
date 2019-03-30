@@ -2,5 +2,7 @@
 
 printenv
 echo "{}" >$GITHUB_WORKSPACE/dude.json
-git status
+which git
+ls $GITHUB_WORKSPACE
+# git status
 # sh -c "echo $*> $GITHUB_WORKSPACE/dude.json"
