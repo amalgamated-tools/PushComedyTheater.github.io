@@ -9,5 +9,5 @@ LABEL "repository"="https://github.com/PushComedyTheater/PushComedyTheater.githu
 LABEL "homepage"="https://github.com/PushComedyTheater/PushComedyTheater.github.io"
 LABEL "maintainer"="Patrick Veverka <patrick@pushcomedytheater.com>"
 
-ADD runner /runner
-ENTRYPOINT ["/runner"]
+ADD entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
