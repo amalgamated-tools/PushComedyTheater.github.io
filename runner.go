@@ -59,9 +59,8 @@ var netClient = &http.Client{
 }
 
 func main() {
-	print("EHLLOE")
 	// loadCache()
-	// loadAllEvents()
+	loadAllEvents()
 }
 
 func loadCache() {
