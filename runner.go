@@ -67,11 +67,18 @@ func check(e error) {
 
 func main() {
 	workspace := os.Getenv("GITHUB_WORKSPACE")
-	d1 := []byte("hello\ngo\n")
+
 	location := fmt.Sprintf("%s/file.json", workspace)
-	print(location)
-	err := ioutil.WriteFile(location, d1, 0644)
+	f, err := os.Create(location)
 	check(err)
+	print(location)
+	d2 := []byte{115, 111, 109, 101, 10}
+	n2, err := f.Write(d2)
+	check(err)
+	fmt.Printf("wrote %d bytes\n", n2)
+
+	// err := ioutil.WriteFile(location, d1, 0644)
+	// check(err)
 	// loadCache()
 	// loadAllEvents()
 }
