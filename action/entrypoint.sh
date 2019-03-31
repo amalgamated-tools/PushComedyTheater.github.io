@@ -1,6 +1,9 @@
 #!/bin/sh -l
 printenv
 
+git config --global user.email "bot@veverka.net"
+git config --global user.name "Patrick Veverka"
+
 cd $GITHUB_WORKSPACE
 ls
 git status
@@ -11,8 +14,6 @@ echo "CREATING STUFF"
 echo "{}" >stuff.json
 echo "SETTING GLOBAL"
 
-git config --global user.email "bot@veverka.net"
-git config --global user.name "Patrick Veverka"
 echo "GIT STATUS"
 git status
 echo "GIT ADD"
@@ -20,7 +21,7 @@ git add stuff.json
 echo "GIT STATUS"
 git status
 echo "GIT COMMIT"
-git commit -m 'adding automagit'
+git commit --author='Patrick Veverka <bot@veverka.net' -m 'adding automagit'
 echo "GIT PUSH ORIGIN"
 git push origin master
 echo "GIT STATUS"
