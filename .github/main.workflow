@@ -1,6 +1,6 @@
 workflow "New workflow" {
   resolves = ["../action/"]
-  on = "fork"
+  on = "push"
 }
 
 action "../action/" {
