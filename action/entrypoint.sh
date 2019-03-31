@@ -21,7 +21,7 @@ git add stuff.json
 echo "GIT STATUS"
 git status
 echo "GIT COMMIT"
-git commit --author='Patrick Veverka <bot@veverka.net' -m 'adding automagit'
+git commit --author='Patrick Veverka <bot@veverka.net>' -m 'adding automagit'
 echo "GIT PUSH ORIGIN"
 git push origin master
 echo "GIT STATUS"
