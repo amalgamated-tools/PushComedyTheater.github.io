@@ -1,5 +1,6 @@
 #!/bin/sh -l
 printenv
-./action/runner
-ls /tmp/
-git --version
+
+cd $GITHUB_WORKSPACE
+ls
+git status
