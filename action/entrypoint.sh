@@ -15,3 +15,4 @@ git add stuff.json
 git status
 git commit -m 'adding automagit'
 git push origin master
+git status
