@@ -1,4 +1,5 @@
 #!/bin/sh -l
+set -x
 printenv
 
 git config --global user.email "bot@veverka.net"
