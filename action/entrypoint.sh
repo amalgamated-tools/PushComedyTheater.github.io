@@ -1,4 +1,5 @@
 #!/bin/sh -l
 printenv
-echo "{}" >$GITHUB_WORKSPACE/file.json
-# ./action/runner
+echo "{}" >/tmp/sfile.json
+./action/runner
+ls /tmp/

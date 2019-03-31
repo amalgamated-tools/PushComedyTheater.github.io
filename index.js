@@ -1,7 +1,7 @@
 const dropcss = require('dropcss');
 var fs = require('fs');
 
-var files = ["unify-components", "unify-core"];
+var files = ["unify-components", "unify-core", "custom"];
 
 files.forEach(cssFile => {
 
@@ -18,6 +18,9 @@ files.forEach(cssFile => {
         var name = element.split(".")[0];
 
         let html = fs.readFileSync(element, 'utf8');
+
+
+
 
         const whitelist = /#foo|\.bar/;
 
@@ -37,6 +40,7 @@ files.forEach(cssFile => {
             }
           },
         });
+
 
         if (dropped.size > 0) {
           fs.writeFile(`./css/${name}.${cssFile}.css`, cleaned.css, function (err) {
