@@ -1,6 +1,6 @@
 workflow "New workflow" {
-  on = "push"
   resolves = ["../action/"]
+  on = "schedule(0 2 * * *)"
 }
 
 action "../action/" {
