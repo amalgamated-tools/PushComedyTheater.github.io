@@ -1,11 +1,13 @@
 #!/bin/sh -l
 set -x
 printenv
-git config --global credential.helper cache
-git config --global user.email "bot@veverka.net"
-git config --global user.name "Patrick Veverka"
 
-ls -al ~/.ssh
+cd /tmp
+
+git clone https://$GITHUB_TOKEN:x-oauth-basic@github.com/PushComedyTheater/PushComedyTheater.github.io.git
+ls -al
+cd PushComedyTheater.github.io/
+ls -al
 # cd $GITHUB_WORKSPACE
 # ls
 # git status
