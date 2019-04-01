@@ -1,2 +1,2 @@
 #!/bin/sh -l
-echo "SUPER COOL"
+echo "SUPER COOL NOW"
