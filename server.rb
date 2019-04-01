@@ -3,6 +3,12 @@ require "json"
 require "git"
 
 post "/" do
+  # clone latest
+  # load current
+  # get latest stuff
+  # compare hashes
+  # profit
+
   # dir = "/tmp/jekyll"
   # username = ENV["GH_USER"] || ""
   # password = ENV["GH_PASS"] || ""
