@@ -2,8 +2,8 @@
 set -x
 printenv
 
-git config --global user.email "bot@veverka.net"
-git config --global user.name "Patrick Veverka"
+# git config --global user.email "bot@veverka.net"
+# git config --global user.name "Patrick Veverka"
 
 cd $GITHUB_WORKSPACE
 ls
