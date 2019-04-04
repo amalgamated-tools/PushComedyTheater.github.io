@@ -127,15 +127,8 @@ class Parser
           logger.info "> This is a regex show"
           parsed[:type] = "show"
         else
-          puts ""
-          puts "Is \"#{parsed[:title]}\" a class or a show?".colorize(:light_blue)
-          puts ""
+          logger.info "We aren't sure what this is, but we're going with show"
           parsed[:type] = "show"
-          choose do |menu|
-            menu.choice(:class) { parsed[:type] = "class" }
-            menu.choice(:show) { parsed[:type] = "show" }
-            menu.prompt = "> "
-          end
         end
       end
     end
@@ -152,7 +145,7 @@ class Parser
     json = Oj.load(contents)
     end_time = Time.now
     filename = url.gsub("https://www.universe.com/api/v2/listings/", "")
-    File.open("./down/#{filename}", "wb") { |file| file.write(contents) }
+    # File.open("./down/#{filename}", "wb") { |file| file.write(contents) }
     logger.debug "Loaded JSON in #{(end_time - beginning_time) * 1000} milliseconds"
     json
   end
