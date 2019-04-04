@@ -3,19 +3,10 @@ workflow "New workflow" {
   on = "push"
 }
 
-# action "../action/" {
-#   uses = "./action"
-#   secrets = ["TOKEN"]
-#   env = {
-#     PAGES_BRANCH = "master"
-#   }
-# }
-
-
-action "Deploy to GitHub Pages" {
-  uses = "maxheld83/ghpages@v0.2.1"
+action "../action/" {
+  uses = "./action"
+  secrets = ["TOKEN"]
   env = {
-    BUILD_DIR = "./"
+    PAGES_BRANCH = "master"
   }
-  secrets = ["GH_PAT"]
 }
