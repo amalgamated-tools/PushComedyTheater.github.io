@@ -41,6 +41,8 @@ main() {
 
   git add .
 
+  git status
+
   # git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$remote_branch"
   # git push --force "${remote_repo}" master:${remote_branch}
 

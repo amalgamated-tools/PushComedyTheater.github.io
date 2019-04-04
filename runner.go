@@ -7,20 +7,22 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/devinterface/structomap"
 )
 
 type Parsed struct {
-	startStamp      int
-	id              string
-	title           string
-	date            string
-	image           string
-	cost            string
-	pageurl         string
-	description     string
-	fullDescription string
-	parsedType      string
-	slug            string
+	StartStamp      int    `json:"start_stamp"`
+	ID              string `json:"id"`
+	Title           string `json:"title"`
+	Date            string `json:"date"`
+	Image           string `json:"image"`
+	Cost            string `json:"cost"`
+	PageUrl         string `json:"pageurl"`
+	Description     string `json:"description"`
+	FullDescription string `json:"full_description"`
+	ParsedType      string `json:"type"`
+	Slug            string `json:"slug"`
 }
 
 type CachedItems []struct {
@@ -83,7 +85,7 @@ func check(e error) {
 
 func main() {
 	loadCache()
-	// loadAllEvents()
+	loadAllEvents()
 }
 
 func loadCache() {
@@ -97,10 +99,6 @@ func loadCache() {
 	check(err)
 	err = json.Unmarshal(cachedShows, &CachedShows)
 	check(err)
-
-	print(len(CachedClasses))
-	print("\n")
-	print(len(CachedShows))
 }
 
 func loadAllEvents() {
@@ -157,17 +155,30 @@ func loadEvent(id string, formattedDuration string) []byte {
 	}
 
 	a := Parsed{
-		startStamp:      m2.Events[0].StartStamp,
-		id:              m2.Listing.ID,
-		title:           m2.Listing.Title,
-		date:            formattedDuration,
-		image:           coverPhotoURL,
-		cost:            costString,
-		pageurl:         fmt.Sprintf("https://www.universe.com/events/%s", m2.Listing.SlugParam),
-		description:     m2.Listing.Description,
-		fullDescription: m2.Listing.DescriptionHTML,
+		StartStamp:      m2.Events[0].StartStamp,
+		ID:              m2.Listing.ID,
+		Title:           m2.Listing.Title,
+		Date:            formattedDuration,
+		Image:           coverPhotoURL,
+		Cost:            costString,
+		PageUrl:         fmt.Sprintf("https://www.universe.com/events/%s", m2.Listing.SlugParam),
+		Description:     m2.Listing.Description,
+		FullDescription: m2.Listing.DescriptionHTML,
 	}
-	fmt.Printf("%v\n", a)
+
+	userSerializer := structomap.New().
+		UseSnakeCase().
+		Pick("StartStamp", "ID")
+
+	userMap := userSerializer.Transform(a)
+	str, _ := json.MarshalIndent(userMap, "", "  ")
+	fmt.Println(string(str))
+
+	fmt.Printf("%v", a)
+
+	b, err := json.Marshal(a)
+	fmt.Printf("%s", string(b))
+
 	return body
 }
 

@@ -1,5 +1,5 @@
 workflow "New workflow" {
-  resolves = ["Deploy to GitHub Pages"]
+  resolves = ["../action/"]
   on = "push"
 }
 
