@@ -36,11 +36,10 @@ main() {
 
   echo "Pushing artifacts to ${GITHUB_REPOSITORY}:$remote_branch"
 
-  # cd public
-  # git init
   git config user.name "GitHub Actions"
   git config user.email "github-actions-bot@users.noreply.github.com"
-  # git add .
+
+  git add .
 
   # git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$remote_branch"
   # git push --force "${remote_repo}" master:${remote_branch}

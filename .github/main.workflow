@@ -1,12 +1,21 @@
 workflow "New workflow" {
-  resolves = ["../action/"]
+  resolves = ["Deploy to GitHub Pages"]
   on = "push"
 }
 
-action "../action/" {
-  uses = "./action"
-  secrets = ["TOKEN"]
+# action "../action/" {
+#   uses = "./action"
+#   secrets = ["TOKEN"]
+#   env = {
+#     PAGES_BRANCH = "master"
+#   }
+# }
+
+
+action "Deploy to GitHub Pages" {
+  uses = "maxheld83/ghpages@v0.2.1"
   env = {
-    PAGES_BRANCH = "master"
+    BUILD_DIR = "./"
   }
+  secrets = ["GH_PAT"]
 }
