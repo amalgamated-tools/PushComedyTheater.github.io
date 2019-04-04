@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 set -o pipefail
+printenv
+cd $GITHUB_WORKSPACE
+pwd
+ls -al
+bundle install
 
 echo "SETTING TOKEN"
 # if [[ -n "$TOKEN" ]]; then
