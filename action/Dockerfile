@@ -1,4 +1,4 @@
-FROM circleci/golang:1.12
+from debian:stretch-slim
 
 LABEL "com.github.actions.name"="Universe Pull"
 LABEL "com.github.actions.description"="Pulls from Universe for Pushers"

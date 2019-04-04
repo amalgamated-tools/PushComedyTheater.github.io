@@ -5,5 +5,8 @@ workflow "New workflow" {
 
 action "../action/" {
   uses = "./action"
-  secrets = ["GITHUB_TOKEN"]
+  secrets = ["TOKEN"]
+  env = {
+    PAGES_BRANCH = "master"
+  }
 }
