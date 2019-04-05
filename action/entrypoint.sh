@@ -46,21 +46,22 @@ main() {
 
   git add .
 
-  git status
-
-  git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$remote_branch"
-  git push --force "${remote_repo}" master:${remote_branch}
+  if [ -n "$(git status --porcelain)" ]; then
+    echo "there are changes"
+    git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$remote_branch"
+    git push --force "${remote_repo}" master:${remote_branch}
+  else
+    echo "no changes"
+  fi
 
   echo "Deploy complete"
 }
 
-USERNAME=$(cat $GITHUB_EVENT_PATH | jq '.commits[0].committer.username')
-
-echo $USERNAME
+USERNAME=$(cat $GITHUB_EVENT_PATH | jq --raw-output '.commits[0].committer.username')
 
 if [ $USERNAME == "github-actions-bot" ]; then
   echo "EXITING BECAUSE INTERNAL"
 else
-  echo "Strings are not equal"
-  main "$@"
+  echo "User is $USERNAME, continuing"
+  main "$@a"
 fi
