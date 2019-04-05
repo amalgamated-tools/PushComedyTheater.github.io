@@ -56,6 +56,8 @@ main() {
 
 USERNAME=$(cat $GITHUB_EVENT_PATH | jq '.commits[0].committer.username')
 
+echo $USERNAME
+
 if [ $USERNAME == "github-actions-bot" ]; then
   echo "EXITING BECAUSE INTERNAL"
 else
