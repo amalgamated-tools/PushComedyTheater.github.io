@@ -1,57 +1,59 @@
 #!/bin/bash
 set -e
 set -o pipefail
-printenv
 
-cd $GITHUB_WORKSPACE
-
-echo "SETTING TOKEN"
 if [[ -n "$TOKEN" ]]; then
   GITHUB_TOKEN=$TOKEN
 fi
 
-echo "SETTING PAGES_BRANCH"
 if [[ -n "$PAGES_BRANCH" ]]; then
   PAGES_BRANCH="master"
 fi
 
-echo "SETTING GITHUB_TOKEN"
 if [[ -z "$GITHUB_TOKEN" ]]; then
   echo "Set the GITHUB_TOKEN env variable."
   exit 1
 fi
 
-echo "SETTING REPOSITORY"
 if [[ -z "$GITHUB_REPOSITORY" ]]; then
   echo "Set the GITHUB_REPOSITORY env variable."
   exit 1
 fi
 
 main() {
-  cd $GITHUB_WORKSPACE
+  cd "$GITHUB_WORKSPACE"
   ruby runner.rb
+
   echo "Starting deploy..."
 
-  echo "Fetching themes"
+  echo "Changing git config"
   git config --global url."https://".insteadOf git://
   git config --global url."https://github.com/".insteadOf git@github.com:
+
+  git config user.name "GitHub Actions"
+  git config user.email "github-actions-bot@users.noreply.github.com"
 
   remote_repo="https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
   remote_branch=$PAGES_BRANCH
 
   echo "Pushing artifacts to ${GITHUB_REPOSITORY}:$remote_branch"
 
-  git config user.name "GitHub Actions"
-  git config user.email "github-actions-bot@users.noreply.github.com"
-
   git add .
 
   if [ -n "$(git status --porcelain)" ]; then
-    echo "there are changes"
+    echo "There are changes to the JSON files"
+
+    curl -s --user "api:$MAILGUN_API_KEY" \
+      https://api.mailgun.net/v3/pushcomedytheater.com/messages \
+      -F from="GitHub Actions <mailgun@pushcomedytheater.com>" \
+      -F to="patrick@pushcomedytheater.com" \
+      -F subject='JSON Updates' \
+      -F text='There were updates, check them out at https://pushcomedytheater.com'
+
     git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$remote_branch"
     git push --force "${remote_repo}" master:${remote_branch}
   else
-    echo "no changes"
+    echo "There are no changes"
   fi
 
   echo "Deploy complete"
@@ -60,7 +62,7 @@ main() {
 USERNAME=$(cat $GITHUB_EVENT_PATH | jq --raw-output '.commits[0].committer.username')
 
 if [ $USERNAME == "github-actions-bot" ]; then
-  echo "EXITING BECAUSE INTERNAL"
+  echo "Don't need to do anything"
 else
   echo "User is $USERNAME, continuing"
   main "$@a"

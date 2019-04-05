@@ -1,4 +1,4 @@
-workflow "New workflow" {
+workflow "Build JSON From Universe" {
   resolves = ["../action/"]
   on = "push"
 }
