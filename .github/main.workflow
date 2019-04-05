@@ -5,7 +5,10 @@ workflow "New workflow" {
 
 action "../action/" {
   uses = "./action"
-  secrets = ["TOKEN"]
+  secrets = [
+    "TOKEN",
+    "MAILGUN_API_KEY",
+  ]
   env = {
     PAGES_BRANCH = "master"
   }
