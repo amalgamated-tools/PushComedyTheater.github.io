@@ -56,9 +56,11 @@ main() {
   echo "Deploy complete"
 }
 
-echo $GITHUB_EVENT_PATH
-
 USERNAME=$(cat $GITHUB_EVENT_PATH | jq '.commits[0].committer.username')
-echo $USERNAME
 
-# main "$@"
+if [ $USERNAME == "github-actions-bot" ]; then
+  echo "EXITING BECAUSE INTERNAL"
+else
+  echo "Strings are not equal"
+  main "$@"
+fi
