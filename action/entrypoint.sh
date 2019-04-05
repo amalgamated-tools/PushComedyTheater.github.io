@@ -5,8 +5,6 @@ printenv
 
 cd $GITHUB_WORKSPACE
 
-bundle install
-
 echo "SETTING TOKEN"
 if [[ -n "$TOKEN" ]]; then
   GITHUB_TOKEN=$TOKEN
