@@ -1,6 +1,6 @@
 workflow "Build JSON From Universe" {
   resolves = ["../action/"]
-  on = "push"
+  on = "schedule(0 22 * * *)"
 }
 
 action "../action/" {
