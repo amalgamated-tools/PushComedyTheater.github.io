@@ -4,6 +4,7 @@ set -o pipefail
 printenv
 
 cd $GITHUB_WORKSPACE
+
 bundle install
 
 echo "SETTING TOKEN"
@@ -29,8 +30,9 @@ if [[ -z "$GITHUB_REPOSITORY" ]]; then
 fi
 
 main() {
+  cat $GITHUB_EVENT_PATH
   cd $GITHUB_WORKSPACE
-  bundle exec ruby runner.rb
+  ruby runner.rb
   echo "Starting deploy..."
 
   echo "Fetching themes"

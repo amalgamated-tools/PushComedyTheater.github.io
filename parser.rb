@@ -1,5 +1,4 @@
 class Parser
-  Oj.default_options = {:mode => :compat}
   DEBUG = false
   SHOWNAMES = ["Fake News The Musical"]
   SHOWREGEXES = [/Storytelling Night/i, /IMPROVAGEDDON/i, /Improvised Fairy Tale/i, /Date Night/i, /Monocle/i, /Tales from the Campfire/i, /SKETCHMAGEDDON/i, /The Unusual Suspects/i, /Improv Riot/i, /Class Dismissed/i, /Girl-Prov/i, /Second Saturday Stand-Up/i, /3 on 3 Improv Tournament/i, /Teacher's Pet/i]
@@ -41,11 +40,11 @@ class Parser
   }
 
   def self.cached_classes
-    @classes ||= Oj.load(File.read("cached_classes.json"))
+    @classes ||= JSON.load(File.read("cached_classes.json"))
   end
 
   def self.cached_shows
-    @shows ||= Oj.load(File.read("cached_shows.json"))
+    @shows ||= JSON.load(File.read("cached_shows.json"))
   end
 
   def self.parse_item(parent, logger)
@@ -142,7 +141,7 @@ class Parser
   def self.load_json(url, logger)
     beginning_time = Time.now
     contents = Net::HTTP.get(URI.parse(url))
-    json = Oj.load(contents)
+    json = JSON.load(contents)
     end_time = Time.now
     filename = url.gsub("https://www.universe.com/api/v2/listings/", "")
     # File.open("./down/#{filename}", "wb") { |file| file.write(contents) }
