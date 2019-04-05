@@ -29,25 +29,26 @@ fi
 
 main() {
   cat $GITHUB_EVENT_PATH
-  cd $GITHUB_WORKSPACE
-  ruby runner.rb
-  echo "Starting deploy..."
+  cat $GITHUB_EVENT_PATH | jq '.commits[0].committer.username'
+  # cd $GITHUB_WORKSPACE
+  # ruby runner.rb
+  # echo "Starting deploy..."
 
-  echo "Fetching themes"
-  git config --global url."https://".insteadOf git://
-  git config --global url."https://github.com/".insteadOf git@github.com:
+  # echo "Fetching themes"
+  # git config --global url."https://".insteadOf git://
+  # git config --global url."https://github.com/".insteadOf git@github.com:
 
-  remote_repo="https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-  remote_branch=$PAGES_BRANCH
+  # remote_repo="https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+  # remote_branch=$PAGES_BRANCH
 
-  echo "Pushing artifacts to ${GITHUB_REPOSITORY}:$remote_branch"
+  # echo "Pushing artifacts to ${GITHUB_REPOSITORY}:$remote_branch"
 
-  git config user.name "GitHub Actions"
-  git config user.email "github-actions-bot@users.noreply.github.com"
+  # git config user.name "GitHub Actions"
+  # git config user.email "github-actions-bot@users.noreply.github.com"
 
-  git add .
+  # git add .
 
-  git status
+  # git status
 
   # git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$remote_branch"
   # git push --force "${remote_repo}" master:${remote_branch}
@@ -55,4 +56,9 @@ main() {
   echo "Deploy complete"
 }
 
-main "$@"
+echo $GITHUB_EVENT_PATH
+
+USERNAME=$(cat $GITHUB_EVENT_PATH | jq '.commits[0].committer.username')
+echo $USERNAME
+
+# main "$@"
