@@ -50,11 +50,11 @@ class Runner
     LOGGER.info("uniq_classes (total #{uniq_classes.count})")
     LOGGER.info("uniq_shows (total #{uniq_shows.count})")
 
-    File.open("cached_classes2.json", "wb") { |file| file.write(JSON.dump(uniq_classes)) }
-    File.open("cached_shows2.json", "wb") { |file| file.write(JSON.dump(uniq_shows)) }
+    File.open("cached_classes.json", "wb") { |file| file.write(JSON.dump(uniq_classes)) }
+    File.open("cached_shows.json", "wb") { |file| file.write(JSON.dump(uniq_shows)) }
 
-    File.open("current_classes2.json", "wb") { |file| file.write(JSON.dump(@classes_json)) }
-    File.open("current_shows2.json", "wb") { |file| file.write(JSON.dump(@shows_json.sort_by { |hsh| hsh[:start_stamp] })) }
+    File.open("current_classes.json", "wb") { |file| file.write(JSON.dump(@classes_json)) }
+    File.open("current_shows.json", "wb") { |file| file.write(JSON.dump(@shows_json.sort_by { |hsh| hsh[:start_stamp] })) }
   end
 end
 
