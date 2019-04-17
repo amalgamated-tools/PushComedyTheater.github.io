@@ -1,3 +1,8 @@
+workflow "Build JSON From Push" {
+  resolves = ["../action/"]
+  on = "push"
+}
+
 workflow "Build JSON From Universe" {
   resolves = ["../action/"]
   on = "schedule(0 22 * * *)"
