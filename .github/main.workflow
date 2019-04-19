@@ -3,10 +3,10 @@ workflow "Build JSON From Push" {
   on = "push"
 }
 
-workflow "Build JSON From Universe" {
-  resolves = ["../action/"]
-  on = "schedule(0 22 * * *)"
-}
+# workflow "Build JSON From Universe" {
+#   resolves = ["../action/"]
+#   on = "schedule(0 22 * * *)"
+# }
 
 action "../action/" {
   uses = "./action"
