@@ -55,7 +55,7 @@ main() {
 USERNAME=$(cat $GITHUB_EVENT_PATH | jq --raw-output '.commits[0].committer.username')
 
 if [ $USERNAME == "github-actions-bot" ]; then
-  echo "Don't need to do anything"
+  echo "Don't need to do anything because username = $USERNAME"
 else
   echo "User is $USERNAME, continuing"
   main "$@a"
