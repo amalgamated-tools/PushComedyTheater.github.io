@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/devinterface/structomap"
@@ -89,12 +92,17 @@ func main() {
 }
 
 func loadCache() {
+	fmt.Println("Loading cache")
 	workspace := os.Getenv("GITHUB_WORKSPACE")
+	cachedClassesFile := fmt.Sprintf("%s/cached_classes.json", workspace)
+	cachedShowsFile := fmt.Sprintf("%s/cached_shows.json", workspace)
+
+	fmt.Printf("-cached classes at %s\n", cachedClassesFile)
+	fmt.Printf("-cached shows at %s\n", cachedShowsFile)
 	cachedClasses, err := ioutil.ReadFile(fmt.Sprintf("%s/cached_classes.json", workspace))
 	check(err)
 	err = json.Unmarshal(cachedClasses, &CachedClasses)
 	check(err)
-
 	cachedShows, err := ioutil.ReadFile(fmt.Sprintf("%s/cached_shows.json", workspace))
 	check(err)
 	err = json.Unmarshal(cachedShows, &CachedShows)
@@ -112,19 +120,26 @@ func loadAllEvents() {
 		panic(err)
 	}
 
-	event := m.Data.Portfolio.Hosting[0]
-	print(event.ID)
-	loadEvent(event.ID, event.FormattedDuration)
+	events := make([]string, 0)
 
-	// for _, event := range m.Data.Portfolio.Hosting {
-	// 	print(event.ID)
-	// 	print("\n")
-	// 	loadEvent(event.ID)
-	// }
+	for _, event := range m.Data.Portfolio.Hosting {
+		print(event.ID)
+		print("\n")
+		eventDetail := loadEvent(event.ID, event.FormattedDuration)
+		events = append(events, eventDetail)
+		// fmt.Println(eventDetail)
+
+	}
+
+	f, err := os.Create("ohyeah.json")
+	w := bufio.NewWriter(f)
+	n4, err := w.WriteString(strings.Join(events, ","))
+	fmt.Printf("wrote %d bytes\n", n4)
+	w.Flush()
 
 }
 
-func loadEvent(id string, formattedDuration string) []byte {
+func loadEvent(id string, formattedDuration string) string {
 	url := fmt.Sprintf("https://www.universe.com/api/v2/listings/%s.json", id)
 	fmt.Printf("Loading url: %s\n", url)
 
@@ -168,18 +183,13 @@ func loadEvent(id string, formattedDuration string) []byte {
 
 	userSerializer := structomap.New().
 		UseSnakeCase().
-		Pick("StartStamp", "ID")
+		Pick("StartStamp", "ID", "Title", "Date", "Image", "Cost", "PageUrl", "Description", "FullDescription")
 
 	userMap := userSerializer.Transform(a)
 	str, _ := json.MarshalIndent(userMap, "", "  ")
-	fmt.Println(string(str))
 
-	fmt.Printf("%v", a)
-
-	b, err := json.Marshal(a)
-	fmt.Printf("%s", string(b))
-
-	return body
+	output := unicode2utf8(string(str))
+	return output
 }
 
 func loadURL(url string) []byte {
@@ -189,4 +199,30 @@ func loadURL(url string) []byte {
 		panic(err)
 	}
 	return body
+
+}
+
+func unicode2utf8(source string) string {
+	var res = []string{""}
+	sUnicode := strings.Split(source, "\\u")
+	var context = ""
+	for _, v := range sUnicode {
+		var additional = ""
+		if len(v) < 1 {
+			continue
+		}
+		if len(v) > 4 {
+			rs := []rune(v)
+			v = string(rs[:4])
+			additional = string(rs[4:])
+		}
+		temp, err := strconv.ParseInt(v, 16, 32)
+		if err != nil {
+			context += v
+		}
+		context += fmt.Sprintf("%c", temp)
+		context += additional
+	}
+	res = append(res, context)
+	return strings.Join(res, "")
 }
