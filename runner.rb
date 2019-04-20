@@ -1,6 +1,9 @@
 require "open-uri"
+require "net/http"
+require "uri"
 require "json"
 require "logger"
+require "stringio"
 require_relative "parser"
 
 class Runner
@@ -10,7 +13,9 @@ class Runner
     "warn" => Logger::WARN,
     "debug" => Logger::DEBUG,
   }
-  LOGGER ||= Logger.new(STDOUT).tap do |logger|
+  STRIO = StringIO.new
+
+  LOGGER ||= Logger.new(STRIO).tap do |logger|
     logger.level = LOG_LEVELS[ENV["LOG_LEVEL"]] || LOG_LEVELS["info"]
   end
 
@@ -55,7 +60,29 @@ class Runner
 
     File.open("current_classes.json", "wb") { |file| file.write(JSON.dump(@classes_json)) }
     File.open("current_shows.json", "wb") { |file| file.write(JSON.dump(@shows_json.sort_by { |hsh| hsh[:start_stamp] })) }
+    return STRIO.string
   end
 end
 
-Runner.new.run
+output = Runner.new.run
+
+uri = URI.parse("https://api.mailgun.net/v3/pushcomedytheater.com/messages")
+request = Net::HTTP::Post.new(uri)
+request.basic_auth("api", ENV["MAILGUN_API_KEY"])
+
+request.set_form_data(
+  "from" => "GitHub Actions <mailgun@pushcomedytheater.com>",
+  "to" => "patrick@pushcomedytheater.com",
+  "subject" => "JSON Updates",
+  "text" => output,
+)
+
+req_options = {
+  use_ssl: uri.scheme == "https",
+}
+
+response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+  http.request(request)
+end
+puts response.code
+puts response.body

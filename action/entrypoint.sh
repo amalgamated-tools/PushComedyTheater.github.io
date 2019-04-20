@@ -22,7 +22,7 @@ fi
 
 main() {
   cd "$GITHUB_WORKSPACE"
-  ruby runner.rb
+  VALUES=$(ruby runner.rb)
 
   echo "Starting deploy..."
 
@@ -42,13 +42,6 @@ main() {
 
   if [ -n "$(git status --porcelain)" ]; then
     echo "There are changes to the JSON files"
-
-    curl -s --user "api:$MAILGUN_API_KEY" \
-      https://api.mailgun.net/v3/pushcomedytheater.com/messages \
-      -F from="GitHub Actions <mailgun@pushcomedytheater.com>" \
-      -F to="patrick@pushcomedytheater.com" \
-      -F subject='JSON Updates' \
-      -F text='There were updates, check them out at https://pushcomedytheater.com'
 
     git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$remote_branch"
     git push --force "${remote_repo}" master:${remote_branch}
