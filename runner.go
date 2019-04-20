@@ -127,8 +127,6 @@ func loadAllEvents() {
 		print("\n")
 		eventDetail := loadEvent(event.ID, event.FormattedDuration)
 		events = append(events, eventDetail)
-		// fmt.Println(eventDetail)
-
 	}
 
 	f, err := os.Create("ohyeah.json")
