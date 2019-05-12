@@ -8,6 +8,11 @@ workflow "Build JSON From Universe" {
   on = "schedule(0 22 * * *)"
 }
 
+workflow "Build JSON From Universe Morning" {
+  resolves = ["../action/"]
+  on = "schedule(0 10 * * *)"
+}
+
 action "../action/" {
   uses = "./action"
   secrets = [
