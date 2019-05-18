@@ -58,31 +58,57 @@ class Runner
     File.open("cached_classes.json", "wb") { |file| file.write(JSON.dump(uniq_classes)) }
     File.open("cached_shows.json", "wb") { |file| file.write(JSON.dump(uniq_shows)) }
 
+    LOGGER.info("Checking for new classes")
+    current_classes_id_list = JSON.load(File.read("current_classes.json")).map do |item|
+      item["id"]
+    end
+    new_current_classes = @classes_json.reject do |item|
+      current_classes_id_list.include?(item[:id])
+    end
+    new_classes_count = new_current_classes.count
+    LOGGER.info("There are #{new_classes_count} new classes")
+
+    LOGGER.info("Checking for new shows")
+    current_shows_id_list = JSON.load(File.read("current_shows.json")).map do |item|
+      item["id"]
+    end
+    new_current_shows = @shows_json.reject do |item|
+      current_shows_id_list.include?(item[:id])
+    end
+    new_shows_count = new_current_shows.count
+    LOGGER.info("There are #{new_shows_count} new shows")
+
     File.open("current_classes.json", "wb") { |file| file.write(JSON.dump(@classes_json)) }
     File.open("current_shows.json", "wb") { |file| file.write(JSON.dump(@shows_json.sort_by { |hsh| hsh[:start_stamp] })) }
-    return STRIO.string
+
+    return STRIO.string, (new_classes_count > 0 || new_shows_count > 0)
   end
 end
 
-output = Runner.new.run
+output, send_email = Runner.new.run
+puts output
+if send_email
+  LOGGER.info "Sending email"
+  uri = URI.parse("https://api.mailgun.net/v3/pushcomedytheater.com/messages")
+  request = Net::HTTP::Post.new(uri)
+  request.basic_auth("api", ENV["MAILGUN_API_KEY"])
 
-uri = URI.parse("https://api.mailgun.net/v3/pushcomedytheater.com/messages")
-request = Net::HTTP::Post.new(uri)
-request.basic_auth("api", ENV["MAILGUN_API_KEY"])
+  request.set_form_data(
+    "from" => "GitHub Actions <mailgun@pushcomedytheater.com>",
+    "to" => "patrick@pushcomedytheater.com",
+    "subject" => "JSON Updates",
+    "text" => output,
+  )
 
-request.set_form_data(
-  "from" => "GitHub Actions <mailgun@pushcomedytheater.com>",
-  "to" => "patrick@pushcomedytheater.com",
-  "subject" => "JSON Updates",
-  "text" => output,
-)
+  req_options = {
+    use_ssl: uri.scheme == "https",
+  }
 
-req_options = {
-  use_ssl: uri.scheme == "https",
-}
-
-response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-  http.request(request)
+  response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+    http.request(request)
+  end
+  puts response.code
+  puts response.body
+else
+  puts "No changes"
 end
-puts response.code
-puts response.body

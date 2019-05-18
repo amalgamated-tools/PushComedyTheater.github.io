@@ -52,6 +52,9 @@ main() {
   echo "Deploy complete"
 }
 
+echo "EVENT"
+cat $GITHUB_EVENT_PATH
+
 USERNAME=$(cat $GITHUB_EVENT_PATH | jq --raw-output '.commits[0].committer.username')
 
 if [ $USERNAME == "github-actions-bot" ]; then
