@@ -88,7 +88,7 @@ end
 output, send_email = Runner.new.run
 puts output
 if send_email
-  LOGGER.info "Sending email"
+  puts "Sending email"
   uri = URI.parse("https://api.mailgun.net/v3/pushcomedytheater.com/messages")
   request = Net::HTTP::Post.new(uri)
   request.basic_auth("api", ENV["MAILGUN_API_KEY"])
