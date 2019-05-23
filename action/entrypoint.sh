@@ -34,10 +34,14 @@ main() {
   git config user.email "github-actions-bot@users.noreply.github.com"
 
   remote_repo="https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+  echo "remote_repo = ${remote_repo}"
+
   remote_branch=$PAGES_BRANCH
+  echo "remote_branch = ${remote_branch}"
 
   echo "Pushing artifacts to ${GITHUB_REPOSITORY}:$remote_branch"
 
+  git checkout master
   git add .
 
   if [ -n "$(git status --porcelain)" ]; then
