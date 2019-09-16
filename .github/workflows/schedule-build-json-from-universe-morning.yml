@@ -1,0 +1,16 @@
+on:
+  schedule:
+  - cron: 0 10 * * *
+name: Build JSON From Universe Morning
+jobs:
+  build:
+    name: ../action/
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: ../action/
+      uses: ./action
+      env:
+        MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+        PAGES_BRANCH: master
+        TOKEN: ${{ secrets.TOKEN }}
