@@ -1,7 +1,7 @@
 class Parser
   DEBUG = false
   SHOWNAMES = ["Fake News The Musical"]
-  SHOWREGEXES = [/Storytelling Night/i, /IMPROVAGEDDON/i, /Improvised Fairy Tale/i, /Date Night/i, /Monocle/i, /Tales from the Campfire/i, /SKETCHMAGEDDON/i, /The Unusual Suspects/i, /Improv Riot/i, /Class Dismissed/i, /Girl-Prov/i, /Second Saturday Stand-Up/i, /3 on 3 Improv Tournament/i, /Teacher's Pet/i]
+  SHOWREGEXES = [/Storytelling Night/i, /666 Project/i, /IMPROVAGEDDON/i, /Improvised Fairy Tale/i, /Date Night/i, /Monocle/i, /Tales from the Campfire/i, /SKETCHMAGEDDON/i, /The Unusual Suspects/i, /Improv Riot/i, /Class Dismissed/i, /Girl-Prov/i, /Second Saturday Stand-Up/i, /3 on 3 Improv Tournament/i, /Teacher's Pet/i]
   CLASSNAMES = {
     "Acting 101 with Brant Powell" => "acting101",
     "Improv 101 with Brad McMurran" => "improv101",
@@ -53,7 +53,7 @@ class Parser
     logger.info "Parsing URL #{url}"
     json = load_json(url, logger)
     item = json["listing"]
-    return if item["state"] == "expired"
+    return nil if item["state"] == "expired" || item["id"] == "5d894a297168cc0044376b7a"
 
     parsed[:start_stamp] = json["events"][0]["start_stamp"].to_i
     parsed[:id] = item["id"]

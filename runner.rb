@@ -33,6 +33,7 @@ class Runner
     doc = JSON.load(open(URL))
     doc["data"]["portfolio"]["hosting"].each do |item|
       parsed = Parser.parse_item(item, LOGGER)
+      next if parsed.nil?
       if parsed[:type] == "class"
         LOGGER.debug("Adding to @cached_classes (current #{@cached_classes.count})")
         @classes_json << parsed
@@ -42,6 +43,44 @@ class Runner
         @shows_json << parsed
         @cached_shows << parsed
       end
+    end
+
+    # for 666 only
+    doc666 = JSON.load(open("https://www.universe.com/api/v2/listings/the-666-project-a-horror-anthology-show-tickets-norfolk-9Z4LSJ.json"))
+    start_stamp = doc666["events"][0]["start_stamp"].to_i
+    item = doc666["listing"]
+
+    i = 1
+    doc666["rates"].each do |rate|
+      name = rate["name"]
+      listing_id = rate["listing_id"]
+
+      cost = rate["price"].to_i
+      if cost == 0
+        cost = "Free"
+      else
+        cost = "$%.2f" % cost
+      end
+
+      cover_photo_id = item["cover_photo_id"]
+      image = doc666["images"].select { |e|
+        e["id"] == cover_photo_id
+      }.first
+
+      parsed = {
+        start_stamp: start_stamp + i,
+        id: listing_id,
+        title: item["title"].to_s.strip,
+        date: name,
+        image: image["url_160"],
+        cost: cost,
+        pageurl: "https://www.universe.com/events/#{item["slug_param"]}",
+        description: item["description"].to_s,
+        full_description: item["description_html"].to_s,
+        type: "show"
+      }
+      i += 1
+      @shows_json << parsed
     end
 
     uniq_classes = @cached_classes.uniq do |x|
