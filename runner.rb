@@ -1,6 +1,7 @@
 require "open-uri"
 require "net/http"
 require "uri"
+require "date"
 require "json"
 require "logger"
 require "stringio"
@@ -47,12 +48,12 @@ class Runner
 
     # for 666 only
     doc666 = JSON.load(open("https://www.universe.com/api/v2/listings/the-666-project-a-horror-anthology-show-tickets-norfolk-9Z4LSJ.json"))
-    start_stamp = doc666["events"][0]["start_stamp"].to_i
     item = doc666["listing"]
 
-    i = 1
     doc666["rates"].each do |rate|
       name = rate["name"]
+      day = name.split(",")[1].split(" at ")[0].gsub("October", "").gsub("th", "").strip
+      start_stamp = DateTime.parse("2019-10-#{day}T20:00:00-04:00").to_time.to_i
       listing_id = rate["listing_id"]
 
       cost = rate["price"].to_i
@@ -68,7 +69,7 @@ class Runner
       }.first
 
       parsed = {
-        start_stamp: start_stamp + i,
+        start_stamp: start_stamp,
         id: listing_id,
         title: item["title"].to_s.strip,
         date: name,
@@ -79,7 +80,6 @@ class Runner
         full_description: item["description_html"].to_s,
         type: "show"
       }
-      i += 1
       @shows_json << parsed
     end
 
