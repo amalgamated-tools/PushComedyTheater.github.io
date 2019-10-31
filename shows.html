@@ -423,20 +423,43 @@
     var special = [""];
 
     $.getJSON("/current_shows.json?time=" + unix, function (data) {
+      let specialEvent = {
+        start_stamp: 1573999200,
+        cost: "Free",
+        date: "Sun, Nov 17 at 10:00am - 12:00pm",
+        description: "Are you in search for the perfect gifts for your family and friends? Do you like supporting local and small business? Do you like being able to do it with a beverage in your hand? If you answered \"yes!\" to any of these questions, then we have the event for you\!\!<br />Local vendors and crafters will be coming together to offer you amazing gift options with a personal touch. While you shop, you can have a beer, sip on a glass of wine, or partake of any number of yummy snacks that will be available for purchase.\nThere will be several prizes up for raffle, as well as fun games and giveaways for participation!  Proceeds from the raffle will go towards scholarships for Push students.",
+        full_description: "Are you in search for the perfect gifts for your family and friends? Do you like supporting local and small business? Do you like being able to do it with a beverage in your hand? If you answered \"yes!\" to any of these questions, then we have the event for you\!\!<br />Local vendors and crafters will be coming together to offer you amazing gift options with a personal touch. While you shop, you can have a beer, sip on a glass of wine, or partake of any number of yummy snacks that will be available for purchase.\nThere will be several prizes up for raffle, as well as fun games and giveaways for participation!  Proceeds from the raffle will go towards scholarships for Push students.",
+        id: "5dba20be93234e0050ccb6e4",
+        image: "https://scontent.fewr1-5.fna.fbcdn.net/v/t1.0-9/76195254_10156482539911630_7470691373365067776_n.jpg?_nc_cat=105&_nc_oc=AQnQ3SPzI1Yz1CYRGJuTlLGCvh-uR36FMhI2uL1iOlfI1lCUN0P2eDW-m-AVN5JP-2s&_nc_ht=scontent.fewr1-5.fna&oh=d52659c7fd679813b3689ce06ea03ac2&oe=5E588CFB",
+        pageurl: "https://www.facebook.com/events/2349656348682714/",
+        start_stamp_formatted: "17 Nov 2019 22:0:0",
+        start_stamp_greater: true,
+        title: "Holiday Bazaar",
+        type: "show",
+        unix: unix
+      }
+      data.push(specialEvent);
+
+      console.log(data);
+      data = data.sort(function(a, b) {
+        return a.start_stamp < b.start_stamp;
+      })
+
+      console.log(data);
+
       $.each(data, function (key, data) {
-        var details = {
-          id: data.id,
-          title: data.title,
-          start_stamp: data.start_stamp,
-          start_stamp_formatted: timeConverter(data.start_stamp),
-          unix: unix,
-          start_stamp_greater: (data.start_stamp > unix),
-        }
-        if ((data.start_stamp > unix) || ($.inArray(details.id, special) >= 0)) {
+        data.unix = unix;
+        data.start_stamp_formatted = timeConverter(data.start_stamp);
+        data.start_stamp_greater = (data.start_stamp > unix);
+
+        if ((data.start_stamp > unix) || ($.inArray(data.id, special) >= 0)) {
           var result = template(data);
           $("#dude").append(result);
         }
       });
+
+
+
     });
   });
 </script>
