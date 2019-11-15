@@ -31,6 +31,7 @@ class Runner
   end
 
   def run
+
     doc = JSON.load(open(URL))
     doc["data"]["portfolio"]["hosting"].each do |item|
       parsed = Parser.parse_item(item, LOGGER)
@@ -46,42 +47,42 @@ class Runner
       end
     end
 
-    # for 666 only
-    doc666 = JSON.load(open("https://www.universe.com/api/v2/listings/the-666-project-a-horror-anthology-show-tickets-norfolk-9Z4LSJ.json"))
-    item = doc666["listing"]
+    # # for 666 only
+    # doc666 = JSON.load(open("https://www.universe.com/api/v2/listings/the-666-project-a-horror-anthology-show-tickets-norfolk-9Z4LSJ.json"))
+    # item = doc666["listing"]
 
-    doc666["rates"].each do |rate|
-      name = rate["name"]
-      day = name.split(",")[1].split(" at ")[0].gsub("October", "").gsub("th", "").strip
-      start_stamp = DateTime.parse("2019-10-#{day}T20:00:00-04:00").to_time.to_i
-      listing_id = rate["listing_id"]
+    # doc666["rates"].each do |rate|
+    #   name = rate["name"]
+    #   day = name.split(",")[1].split(" at ")[0].gsub("October", "").gsub("th", "").strip
+    #   start_stamp = DateTime.parse("2019-10-#{day}T20:00:00-04:00").to_time.to_i
+    #   listing_id = rate["listing_id"]
 
-      cost = rate["price"].to_i
-      if cost == 0
-        cost = "Free"
-      else
-        cost = "$%.2f" % cost
-      end
+    #   cost = rate["price"].to_i
+    #   if cost == 0
+    #     cost = "Free"
+    #   else
+    #     cost = "$%.2f" % cost
+    #   end
 
-      cover_photo_id = item["cover_photo_id"]
-      image = doc666["images"].select { |e|
-        e["id"] == cover_photo_id
-      }.first
+    #   cover_photo_id = item["cover_photo_id"]
+    #   image = doc666["images"].select { |e|
+    #     e["id"] == cover_photo_id
+    #   }.first
 
-      parsed = {
-        start_stamp: start_stamp,
-        id: listing_id,
-        title: item["title"].to_s.strip,
-        date: name,
-        image: image["url_160"],
-        cost: cost,
-        pageurl: "https://www.universe.com/events/#{item["slug_param"]}",
-        description: item["description"].to_s,
-        full_description: item["description_html"].to_s,
-        type: "show"
-      }
-      @shows_json << parsed
-    end
+    #   parsed = {
+    #     start_stamp: start_stamp,
+    #     id: listing_id,
+    #     title: item["title"].to_s.strip,
+    #     date: name,
+    #     image: image["url_160"],
+    #     cost: cost,
+    #     pageurl: "https://www.universe.com/events/#{item["slug_param"]}",
+    #     description: item["description"].to_s,
+    #     full_description: item["description_html"].to_s,
+    #     type: "show"
+    #   }
+    #   @shows_json << parsed
+    # end
 
     uniq_classes = @cached_classes.uniq do |x|
       x["id"]
