@@ -118,8 +118,8 @@ class Runner
     new_shows_count = new_current_shows.count
     LOGGER.info("There are #{new_shows_count} new shows")
 
-    File.open("current_classes.json", "wb") { |file| file.write(JSON.dump(@classes_json)) }
-    File.open("current_shows.json", "wb") { |file| file.write(JSON.dump(@shows_json.sort_by { |hsh| hsh[:start_stamp] })) }
+    File.open("current_classes.json", "wb") { |file| file.write(JSON.pretty_generate(@classes_json)) }
+    File.open("current_shows.json", "wb") { |file| file.write(JSON.pretty_generate(@shows_json.sort_by { |hsh| hsh[:start_stamp] })) }
 
     return STRIO.string, (new_classes_count > 0 || new_shows_count > 0)
   end
