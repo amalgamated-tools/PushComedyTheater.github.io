@@ -53,13 +53,15 @@ class Parser
     logger.info "Parsing URL #{url}"
     json = load_json(url, logger)
     item = json["listing"]
-    return nil if item["state"] == "expired" || item["id"] == "5d894a297168cc0044376b7a"
+    logger.info "expired" if item["state"] == "expired"
+    return nil if item["state"] == "expired"
 
     parsed[:start_stamp] = json["events"][0]["start_stamp"].to_i
     parsed[:id] = item["id"]
     parsed[:title] = item["title"].to_s.strip
     logger.info "> Title = #{parsed[:title]}"
     parsed[:date] = parent["formatted_duration"]
+    logger.info "> Date = #{parsed[:date]}"
 
     cover_photo_id = item["cover_photo_id"]
     image = json["images"].select { |e|
