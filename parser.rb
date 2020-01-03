@@ -9,6 +9,7 @@ class Parser
     "Improv 201 at the Push Comedy Theater" => "improv201",
     "Improv 201: Foundations of the Harold" => "improv201",
     "Improv 201: Foundations of the Harold: Game and Second Beats" => "improv201",
+    "Improv 201: Scene Work and Short Form Games" => "improv201",
     "Improv 301 : The Harold Openers and Group Games" => "improv301",
     "Improv 301: The Harold Openers and Group Games" => "improv301",
     "Improv 401: Advanced Harold" => "improv401",
