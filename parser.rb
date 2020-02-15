@@ -25,6 +25,7 @@ class Parser
     "Musical Improv 101" => "music_improv101",
     "Musical Improv 201" => "music_improv201",
     "Musical Improv Studio" => "music_improve_studio",
+    "Pre-Teen Improv Comedy Camp" => "kidprovcamp1",
     "Pre-Teen Improv Camp" => "kidprovcamp1",
     "Pre-Teen Improv at the Push Comedy Theater" => "preteen_101",
     "Pre-teen Improvisation Comedy Camp Session 2" => "preteen_101",
@@ -38,6 +39,7 @@ class Parser
     "Stand-Up Comedy 101 with Hatton Jordan" => "standup101",
     "Teen Sketch Comedy Camp" => "teen_improv",
     "Teen Improv and Sketch Comedy Summer Camp" => "teenimprovcamp1",
+    "Teen Improv Comedy Summer Camp" => "teenimprovcamp1"
   }
 
   def self.cached_classes
