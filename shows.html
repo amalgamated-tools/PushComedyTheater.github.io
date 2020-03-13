@@ -272,7 +272,7 @@
             </li>
 
             <li class="nav-item g-mx-10--lg g-mx-15--xl">
-              <a href="/panties.html" id="nav-link--workshop" class="nav-link red g-py-7 g-px-0">
+              <a href="/panties.html" id="nav-link--panties" style="display: none" class="nav-link red g-py-7 g-px-0">
                 panties in a twist
               </a>
             </li>
@@ -341,7 +341,17 @@
         <div id="dude" class="row">
 
 
-
+          <h3 class="g-font-weight-700 g-font-size-30 g-font-size-40--md text-uppercase text-center g-mb-30">
+            The Push Comedy Theater is Temporarily Closed</h3>
+        </div>
+<p>Due to the COVID-19 situation, we are following the recent large gatherings mandate by the Commonwealth of Virginia, as well as the example set by the City of Norfolk and will be temporarily closing.</p>
+<p>This closing will affect all shows, classes and rehearsals at the Push Comedy Theater and Push Comedy Theater Training Center. We will be monitoring the situation on a week by week basis and will keep you informed as to when we will resume normal business operations. We will be issuing refunds for this weekend's lineup of shows and will be contacting students about the rescheduling of classes. Please be patient with us as we work through this process. We will be processing refunds for this weekend's shows over the next few days.</p>
+<p>We hate that this is happening and apologize for the inconvenience, but the safety and well being of our patrons, staff and performers is very important to us. Don't worry, we are not going away. And as soon as this mess is cleaned up we will be back making Hampton Roads laugh.</p>
+<p>Our hearts go out to everyone going through these strange times.</p>
+<p>Keep making your partner look good! And wash those hands!!!</p>
+<p>Good Talk,<br />
+Sean and Brad
+</p>
         </div>
       </div>
       <!-- End Search Results -->
@@ -390,58 +400,7 @@
   </div>
 
 </script>
-<script type="text/javascript">
-  function timeConverter(UNIX_timestamp) {
-    var a = new Date(UNIX_timestamp * 1000);
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
-    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-    return time;
-  }
 
-  $(document).on('ready', function () {
-    Handlebars.registerHelper('cool', function (text) {
-      var length = 350;
-      var ending = "...</a>";
-
-      if (text.length > length) {
-        text = text.substring(0, length - ending.length) + ending;
-      }
-
-      return new Handlebars.SafeString(text);
-    });
-    var source = document.getElementById("entry-template").innerHTML;
-    var template = Handlebars.compile(source);
-
-    var unix = Math.round(Date.now() / 1000);
-
-    var special = [""];
-
-    $.getJSON("/current_shows.json?time=" + unix, function (data) {
-      data = data.sort(function(a, b) {
-        return a.start_stamp < b.start_stamp;
-      })
-      $.each(data, function (key, data) {
-        data.unix = unix;
-        data.start_stamp_formatted = timeConverter(data.start_stamp);
-        data.start_stamp_greater = (data.start_stamp > unix);
-
-        if ((data.start_stamp > unix) || ($.inArray(data.id, special) >= 0)) {
-          var result = template(data);
-          $("#dude").append(result);
-        }
-      });
-
-
-
-    });
-  });
-</script>
 <section class="g-bg-primary">
 <form name="mailchimp" action="//thepusherscomedy.us6.list-manage.com/subscribe/post?u=a008a12cd5bd8fff31f243c70&amp;id=a0148d49bc" method="post">
   <div class="container g-pt-25 g-pb-10">
